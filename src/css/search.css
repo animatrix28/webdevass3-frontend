@@ -1,0 +1,161 @@
+/* .main_box {
+ text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    align-content: center !important; 
+} */
+
+.search_bar {
+    display: flex;
+    justify-content: center;
+}
+
+.stock_details {
+    display: flex;
+    margin: 50px auto;
+    max-width: 1000px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.stock-detail-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1000px;
+    width: 100%;
+    margin-bottom: 30px;
+
+}
+
+.stock-detail-container span div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.red-text {
+    color: red;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.green-text {
+    color: green;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.peer {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    width: fit-content;
+}
+
+.peer:hover {
+    color: darkblue;
+}
+
+.summary_tab {
+    display: flex;
+    justify-content: space-between;
+}
+
+.price_detail {
+    text-align: center;
+    width: max-content
+}
+
+.mx-5 {
+    margin-left: 4.5rem !important;
+}
+
+/* .price_detail b{
+    display: inline-block;
+} */
+.about_company {
+    text-align: center;
+}
+
+.about_company p {
+    /* font-weight: bold; */
+    margin: 8px;
+}
+
+.hourly_chart {
+    width: 585px;
+    height: 380px;
+}
+
+.marketClose {
+    color: red;
+}
+
+.marketOpen {
+    color: green;
+}
+
+.news_cards {
+    height: 105px;
+    flex-basis: calc(50% - 20px);
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #F9F9F9;
+}
+
+.news_cards img {
+    height: 80px;
+    width: 150px;
+    margin: 10px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.news_cards h6 {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.2;
+    text-align: center;
+    width: calc(100% - 200px);
+}
+
+.sentiment {
+    justify-content: center;
+    display: grid;
+}
+
+.sentiment h3 {
+    text-align: center;
+}
+
+.sentiment th,td {
+    text-align: center;
+    border-bottom: 1px solid lightgrey;
+    font-size: larger;
+    width: 190px;
+    padding: 6px;
+}
+.highcharts-stack-labels {
+    display: none !important;
+}
+
+#favIcon{
+    font-size: 22px;
+}
+
+/* @media (max-width: 576px) {
+    .modal-dialog-centered-responsive {
+        max-width: 100%;
+        width: auto;
+    }
+} */
