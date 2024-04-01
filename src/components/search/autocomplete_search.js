@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 // import debounce from 'lodash.debounce';
 
-export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, setQueryCheck }) {
+export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, setQueryCheck, setIsSearchCompleted, setsymbolMessage }) {
   const [open, setOpen] = useState(false); // State to track if auto complete is open or not.
   const [value, setValue] = useState([]); // State to keep track of selected items
   var [inputValue, setInputValue] = useState(''); // State for the input value
@@ -35,12 +35,12 @@ export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, s
   //   }
   // },[])
 
-  useEffect(()=>{
-    if (location.state){
+  useEffect(() => {
+    if (location.state) {
       stockSearch(location.state.search_query);
       setInputValue(location.state.search_query);
     }
-  },[])
+  }, [])
 
   const handleOpen = () => {
     if (inputValue.trim() !== '') {
@@ -55,6 +55,8 @@ export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, s
   const handleCloseButton = () => {
     setOpen(false);
     setInputValue("");
+    setQueryCheck(0);
+    setsymbolMessage(false)
     localStorage.removeItem("search_query");
   };
 
@@ -80,8 +82,8 @@ export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, s
           // signal: signal
         }
       );
-
       if (response.error) {
+        setQueryCheck(0);
         console.log(response.error)
       }
       else {
@@ -92,14 +94,11 @@ export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, s
           // const optionList = String(response.data) !== '{}' ? response.data.result.map((option)=>`${option.symbol} | ${option.description}`) : []
           const optionList = response.data.result.filter(option => option.type === "Common Stock" && !option.symbol.includes("."))
             .map((option) => `${option.symbol} | ${option.description}`)
-          if (response.data.result === null) {
-            setQueryCheck(0);
-          } else {
-            setQueryCheck(1);
-          }
+
           setOptions(optionList);
           setLoading(false);
           setShowSpinner(false);
+          setIsSearchCompleted(true);
         }
         else {
           setLoading(false);
@@ -109,6 +108,7 @@ export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, s
     } catch (error) {
       setLoading(false);
       setShowSpinner(false);
+      setIsSearchCompleted(false);
       if (error.name === 'AbortError') {
         console.log('Fetch request was aborted');
       } else {
@@ -137,26 +137,50 @@ export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, s
   //when search button or enter key is pressed or any option is selected, this function is called with the input value.
   const handleOptionSelected = (event, value) => {
     if (value) {
-      stockSearch(value);
+      const selectedSymbol = value.split('|')[0].trim();
+      stockSearch(selectedSymbol);
       handleClose();
     }
   };
-  const stockSearch = (search_query) => {
-    // console.log("ANIMESH: " + search_query);
-    setSelectedStock(search_query.split('|')[0].trim());
-    setSearchQuery(search_query.split('|')[0].trim());
-    
-    // console.log(location.state.search_query)
+  const stockSearch = async (search_query) => {
+    try {
+      let response1 = await httpCall(
+        {
+          http: `${process.env.REACT_APP_API_HOST}/search/stock_details/${search_query.split('|')[0].trim()}`,
+          method: "POST",
+          // body: {"search_query":searchQuery}
+          // signal: signal
+        }
+      );
 
-    navigate(`/search/${search_query}`,{state:{search_query: search_query}});
-    localStorage.setItem('search_query', search_query);
+      if (response1.data.c === 0) {
+        setQueryCheck(0);
+        setsymbolMessage(true);
+      } else {
+        setQueryCheck(1);
+        setsymbolMessage(false);
+
+        // console.log("ANIMESH: " + search_query);
+        setSelectedStock(search_query.split('|')[0].trim());
+        setSearchQuery(search_query.split('|')[0].trim());
+
+        // console.log(location.state.search_query)
+
+        navigate(`/search/${search_query}`, { state: { search_query: search_query } });
+        localStorage.setItem('search_query', search_query);
+      }
+    } catch (err) {
+      setQueryCheck(0);
+      setsymbolMessage(true);
+    }
+
   };
 
   useEffect(() => {
     // Hide spinner after 3 seconds
     const timer = setTimeout(() => {
       setShowSpinner(false);
-    }, 3000);
+    }, 5000);
 
     // Clear timeout on component unmount
     return () => clearTimeout(timer);
@@ -209,8 +233,12 @@ export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, s
                   borderRadius: '30px',
                   border: '3px solid #16148b',
                 },
-                width: '30vw',
-                height: '16px'
+                minWidth: '30vw',
+                maxWidth: "90vw",
+                height: '16px',
+                '@media (max-width: 768px)': {
+                  minWidth: '90vw', // Adjust width for medium screens
+                },
               }}
             />
           )}

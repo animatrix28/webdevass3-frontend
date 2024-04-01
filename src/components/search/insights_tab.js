@@ -15,7 +15,7 @@ const fetchInsightsData = async (searchQuery) => {
         return response;
     } catch (error) {
         console.error('Error fetching chart data:', error);
-        throw error;
+        // throw error;
     }
 };
 

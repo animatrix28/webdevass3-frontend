@@ -19,7 +19,6 @@ const fetchChartData = async (searchQuery, from_date, to_date) => {
         return response;
     } catch (error) {
         console.error('Error fetching chart data:', error);
-        throw error;
     }
 };
 
@@ -36,6 +35,7 @@ export default function SummaryChart({ searchQuery, timeStamp }) {
     const [chartData, setChartData] = useState(null);
     const [highchartsOptions, setHighchartsOptions] = useState(null);
     const [chartColor, setchartColor] = useState("");
+    const [loadingError, setLoadingError] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -55,14 +55,16 @@ export default function SummaryChart({ searchQuery, timeStamp }) {
                 }
 
                 const response = await fetchChartData(searchQuery, from_date, to_date);
+                // console.log(response);
                 if (!response.data || !Array.isArray(response.data.results)) {
                     throw new Error('Invalid chart data format');
                 }
-                setChartData(response.data.results);
-
-                const seriesData = response.data.results.map(item => [item.t, item.c]);
+                    setChartData(response.data.results);
+                
+                const seriesData = response.data.results.map(item => [item.t , item.c]);
+                // console.log(seriesData)
                 const chartsOptions = {
-                    chart:{backgroundColor: '#FAFAFA'},
+                    chart: { backgroundColor: '#FAFAFA' },
                     accessibility: {
                         enabled: false
                     },
@@ -106,13 +108,19 @@ export default function SummaryChart({ searchQuery, timeStamp }) {
                 };
 
                 setHighchartsOptions(chartsOptions);
+                setLoadingError(false);
             } catch (error) {
+                setLoadingError(true);
                 console.error('Error in fetching chart data:', error);
             }
         };
-
         fetchData();
+        
     }, [searchQuery, timeStamp, chartColor]);
+
+    if (loadingError) {
+        return <div>Error: API Call limit Exceeded or previous day was sunday or a national holiday</div>;
+    }
 
     return (
         <div>

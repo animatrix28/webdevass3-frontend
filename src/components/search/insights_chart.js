@@ -22,7 +22,7 @@ const fetchChartData = async (searchQuery, from_date, to_date) => {
         return response;
     } catch (error) {
         console.error('Error fetching chart data:', error);
-        throw error;
+        // throw error;
     }
 };
 

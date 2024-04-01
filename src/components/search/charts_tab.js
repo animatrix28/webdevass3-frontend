@@ -24,12 +24,13 @@ const fetchChartData = async (searchQuery, from_date, to_date) => {
         return response;
     } catch (error) {
         console.error('Error fetching chart data:', error);
-        throw error;
+        // throw error;
     }
 };
 
 export default function ChartsTab({ searchQuery }) {
     const [chartData, setData] = useState(null);
+    const [loadingError, setLoadingError] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,15 +43,19 @@ export default function ChartsTab({ searchQuery }) {
                 if (!response.data || !Array.isArray(response.data.results)) {
                     throw new Error('Invalid chart data format');
                 }
-                setData(response);
+                    setData(response);
+                    setLoadingError(false);
             } catch (error) {
+                setLoadingError(true);
                 console.error('Error in fetching chart data:', error);
             }
         };
-
         fetchData();
     }, [searchQuery]);
 
+    if (loadingError) {
+        return <div>Error: API Call limit Exceeded</div>;
+    }
     if (!chartData) {
         return <div>Loading...</div>;
     }

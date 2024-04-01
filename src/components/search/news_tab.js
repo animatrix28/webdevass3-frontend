@@ -15,7 +15,8 @@ const style = {
     top: '40%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 470,
+    minWidth: 350,
+    width: '25%',
     bgcolor: 'background.paper',
     boxShadow: 24,
     py: 2,
@@ -36,7 +37,7 @@ const fetchNewsData = async (searchQuery, from_date, to_date) => {
         return response;
     } catch (error) {
         console.error('Error fetching chart data:', error);
-        throw error;
+        // throw error;
     }
 };
 
@@ -83,16 +84,19 @@ export default function NewsTab({ searchQuery }) {
     };
 
     return (
-        <div  
-            style={{ display: 'flex', flexWrap: 'wrap', marginTop: "15px", cursor: "pointer" }}
+        <div
+            style={{ display: 'flex', flexWrap: 'wrap', marginTop: "15px", cursor: "pointer", flexDirection: 'row', alignItems: 'center' }}
         >
             {newsData.map((item, index) => (
                 <div class='news_cards' key={index} onClick={() => handleCardClick(item)}>
                     <img src={item.image} alt="News" />
-                    <h6 className="ms-1">{item.headline}</h6>
+                    <div className="card-content">
+                        <h6>{item.headline}</h6>
+                    </div>
                 </div>
             ))}
             <Modal
+                className='modal-dialog-centered modal-dialog-scrollable modal-dialog-centered-responsive'
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
                 open={open}
