@@ -7,7 +7,7 @@ const fetchInsightsData = async (searchQuery) => {
     try {
         const response = await httpCall({
             http: `${process.env.REACT_APP_API_HOST}/search/insights/${searchQuery}`,
-            method: "POST",
+            method: "GET",
             body: {
                 searchQuery: searchQuery
             }

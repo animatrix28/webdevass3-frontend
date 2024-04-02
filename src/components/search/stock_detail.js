@@ -90,7 +90,7 @@ export default function StockDetails({ selectedStock, searchQuery, setHighPrice,
             let response = await httpCall(
                 {
                     http: `${process.env.REACT_APP_API_HOST}/search/stock_details/${searchQuery}`,
-                    method: "POST",
+                    method: "GET",
                     // body: {"search_query":searchQuery}
                     // signal: signal
 
@@ -171,7 +171,7 @@ export default function StockDetails({ selectedStock, searchQuery, setHighPrice,
         try {
             // const response = await httpCall({
             //     http: `${process.env.REACT_APP_API_HOST}/watchlist/mongo/${searchQuery}`,
-            //     method: "POST",
+            //     method: "GET",
             //     body: { check: 1, exchange: exchange }
             // });
             // const data = await response;
@@ -182,7 +182,7 @@ export default function StockDetails({ selectedStock, searchQuery, setHighPrice,
                 const response = await httpCall({
                     http: `${process.env.REACT_APP_API_HOST}/watchlist/mongo/`,
                     method: "POST",
-                    body: { searchQuery: searchQuery, check: "remove", exchange: exchange }
+                    body: { searchQuery: searchQuery.toUpperCase(), check: "remove", exchange: exchange }
                 });
                 setalertMessage(true);
                 setsuccessText(`${tickerSymbol} removed from watchlist.`);
@@ -194,7 +194,7 @@ export default function StockDetails({ selectedStock, searchQuery, setHighPrice,
                 const response = await httpCall({
                     http: `${process.env.REACT_APP_API_HOST}/watchlist/mongo/`,
                     method: "POST",
-                    body: { searchQuery: searchQuery, check: "add", exchange: exchange }
+                    body: { searchQuery: searchQuery.toUpperCase(), check: "add", exchange: exchange }
                 });
                 setalertMessage(true);
                 setsuccessText(`${tickerSymbol} added to watchlist.`);
@@ -258,7 +258,7 @@ export default function StockDetails({ selectedStock, searchQuery, setHighPrice,
             const watchlistCheck = await httpCall({
                 http: `${process.env.REACT_APP_API_HOST}/watchlist/mongo/`,
                 method: "POST",
-                body: { searchQuery: searchQuery, check: "", exchange: exchange }
+                body: { searchQuery: searchQuery.toUpperCase(), check: "", exchange: exchange }
             });
             const data = await response.data;
             const watchlistData = await watchlistCheck;

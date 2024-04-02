@@ -77,7 +77,7 @@ export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, s
       let response = await httpCall(
         {
           http: `${process.env.REACT_APP_API_HOST}/search/${searchQuery}`,
-          method: "POST",
+          method: "GET",
           // body: {"search_query":searchQuery}
           // signal: signal
         }
@@ -147,7 +147,7 @@ export default function AutoCompleteSearch({ setSelectedStock, setSearchQuery, s
       let response1 = await httpCall(
         {
           http: `${process.env.REACT_APP_API_HOST}/search/stock_details/${search_query.split('|')[0].trim()}`,
-          method: "POST",
+          method: "GET",
           // body: {"search_query":searchQuery}
           // signal: signal
         }

@@ -7,34 +7,6 @@ import '../../css/search.css'
 
 const moment = require('moment');
 
-const fetchChartData = async (searchQuery, from_date, to_date) => {
-    try {
-        const response = await httpCall({
-            http: `${process.env.REACT_APP_API_HOST}/search/charts/${searchQuery}`,
-            method: "POST",
-            body: {
-                searchQuery: searchQuery,
-                from_date: from_date,
-                to_date: to_date,
-                range: "hour"
-            }
-        });
-        return response;
-    } catch (error) {
-        console.error('Error fetching chart data:', error);
-        // throw error;
-    }
-};
-
-function formatDate(epochTime) {
-    const date = new Date(epochTime * 1000); // Convert seconds to milliseconds
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-}
-
 export default function InsightsChart({ recommendationAPI, earningsAPI }) {
     const [recommendationChart, setrecommendationChart] = useState(null);
     const [earningChart, setEarningChart] = useState(null);
