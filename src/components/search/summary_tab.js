@@ -57,7 +57,7 @@ export default function SummaryTab({ highPrice, lowPrice, openPrice, prevClosePr
                 </div>
                 <div class="col-md-6 col-sm-6">
                     <div className="hourly_chart">
-                        {/* {windowWidth >= 350 && <SummaryChart searchQuery={searchQuery} timeStamp={timeStamp} />} */}
+                        {windowWidth >= 350 && <SummaryChart searchQuery={searchQuery} timeStamp={timeStamp} />}
                     </div>
                 </div>
 
