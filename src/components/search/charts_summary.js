@@ -118,9 +118,9 @@ export default function SummaryChart({ searchQuery, timeStamp }) {
         
     }, [searchQuery, timeStamp, chartColor]);
 
-    if (loadingError) {
-        return <div>Error: API Call limit Exceeded or previous day was sunday or a national holiday</div>;
-    }
+    // if (loadingError) {
+    //     return <div>Error: API Call limit Exceeded or previous day was sunday or a national holiday</div>;
+    // }
 
     return (
         <div>
